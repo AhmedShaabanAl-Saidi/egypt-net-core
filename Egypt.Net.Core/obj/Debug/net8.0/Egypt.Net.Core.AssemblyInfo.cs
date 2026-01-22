@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Core domain utilities for Egyptian national data parsing.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e44627559f4549095b517f4b7124e28f2f35365a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+65b29f1239e19d592df250078c09fce112f0f04b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Egypt.Net.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Egypt.Net.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
