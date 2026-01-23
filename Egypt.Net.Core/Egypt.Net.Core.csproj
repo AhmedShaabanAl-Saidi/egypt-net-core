@@ -5,14 +5,24 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <Version>0.1.0</Version>
+
     <PackageId>Egypt.Net.Core</PackageId>
-    <Title>Egypt.NET Core</Title>
-    <Description>Core domain utilities for Egyptian national data parsing.</Description>
+    <Version>0.1.0</Version>
     <Authors>Abdulrahman Hossam</Authors>
     <Company>Community</Company>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Title>Egypt .NET Domain Core</Title>
+    <Description>
+      Core domain utilities for working with Egyptian national data in .NET.
+      Includes parsing and validation of Egyptian National ID.
+    </Description>
+    <PackageTags>Egypt;NationalID;Domain;Validation;.NET</PackageTags>
     <RepositoryUrl>https://github.com/abdulrhmanhossam/egypt-net-core</RepositoryUrl>
-    <PackageTags>egypt;national-id;dotnet;domain</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 </Project>
