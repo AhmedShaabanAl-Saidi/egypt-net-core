@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
+    <Version>0.1.0</Version>
     <PackageId>Egypt.Net.Core</PackageId>
     <Title>Egypt.NET Core</Title>
     <Description>Core domain utilities for Egyptian national data parsing.</Description>
