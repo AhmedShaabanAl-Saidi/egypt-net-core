@@ -1,3 +1,5 @@
+using Egypt.Net.Core.Exceptions;
+
 namespace Egypt.Net.Core.Tests;
 
 public class EgyptianNationalIdTests
@@ -5,51 +7,50 @@ public class EgyptianNationalIdTests
     [Fact]
     public void Constructor_WithValidNationalId_ShouldCreateObject()
     {
-        // Arrange
         var nationalIdValue = "30101011234567";
 
-        // Act
         var nationalId = new EgyptianNationalId(nationalIdValue);
 
-        // Assert
         Assert.NotNull(nationalId);
     }
 
     [Fact]
     public void BirthDate_ShouldBeParsedCorrectly_FromNationalId()
     {
-        // Arrange
         var nationalIdValue = "30101011234567";
         var expectedBirthDate = new DateTime(2001, 01, 01);
 
-        // Act
         var nationalId = new EgyptianNationalId(nationalIdValue);
 
-        // Assert
         Assert.Equal(expectedBirthDate, nationalId.BirthDate);
     }
 
     [Fact]
-    public void Gender_ShouldBeMale_WhenSerialLastDigitIsEven()
+    public void Gender_ShouldBeFemale_WhenSerialLastDigitIsEven()
     {
-        // Arrange
         var nationalIdValue = "30101011234568";
 
-        // Act
         var nationalId = new EgyptianNationalId(nationalIdValue);
 
-        // Assert
+        Assert.Equal(Gender.Female, nationalId.Gender);
+    }
+
+    [Fact]
+    public void Gender_ShouldBeMale_WhenSerialLastDigitIsOdd()
+    {
+        var nationalIdValue = "30101011234567";
+
+        var nationalId = new EgyptianNationalId(nationalIdValue);
+
         Assert.Equal(Gender.Male, nationalId.Gender);
     }
 
     [Fact]
-    public void Constructor_ShouldThrowException_WhenNationalIdIsInvalid()
+    public void Constructor_ShouldThrowInvalidNationalIdFormatException_WhenNationalIdIsTooShort()
     {
-        // Arrange
         var invalidNationalId = "123";
 
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() =>
+        Assert.Throws<InvalidNationalIdFormatException>(() =>
         {
             new EgyptianNationalId(invalidNationalId);
         });
@@ -64,20 +65,20 @@ public class EgyptianNationalIdTests
     }
 
     [Fact]
-    public void Constructor_ShouldThrow_WhenGovernorateCodeIsInvalid()
+    public void Constructor_ShouldThrowInvalidGovernorateCodeException_WhenGovernorateCodeIsInvalid()
     {
         var invalidId = "30101019999999";
 
-        Assert.Throws<InvalidOperationException>(() =>
+        Assert.Throws<InvalidGovernorateCodeException>(() =>
         {
             new EgyptianNationalId(invalidId);
         });
     }
 
     [Fact]
-    public void Age_ShouldBeCorrect_ForKnownBirthDate()
+    public void Age_ShouldBeCalculatedCorrectly_ForKnownBirthDate()
     {
-        var id = new EgyptianNationalId("30001010123456"); // 1/1/2000
+        var id = new EgyptianNationalId("30001010123456"); // 01/01/2000
 
         Assert.True(id.Age >= 24);
     }
@@ -89,5 +90,4 @@ public class EgyptianNationalIdTests
 
         Assert.True(id.IsAdult);
     }
-
 }

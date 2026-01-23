@@ -16,7 +16,7 @@ public sealed class EgyptianNationalId
     private const int DayIndex = 5;
     private const int GovernorateIndex = 7;
     private const int SerialIndex = 9;
-    private const int SerialLength = 3;
+    private const int SerialLength = 4;
 
     /// <summary>
     /// Gets the original 14-digit National ID value.
@@ -73,8 +73,7 @@ public sealed class EgyptianNationalId
     /// </exception>
     public EgyptianNationalId(string value)
     {
-        if (!IsValid(value))
-            throw new InvalidNationalIdException("National ID must be exactly 14 digits.");
+        IsValid(value);
 
         Value = value;
 
@@ -99,7 +98,7 @@ public sealed class EgyptianNationalId
             return false;
 
         if (value.Length != 14)
-            throw new InvalidNationalIdException(
+            throw new InvalidNationalIdFormatException(
                  "National ID must be exactly 14 digits long."
                 );
 
@@ -146,8 +145,7 @@ public sealed class EgyptianNationalId
 
     private Gender GetGender()
     {
-        int serialLastDigit = int.Parse(
-            Value.Substring(SerialIndex + SerialLength - 1, 1));
+        int serialLastDigit = Value[^1] - '0';
 
         return serialLastDigit % 2 == 0
             ? Gender.Female
@@ -171,7 +169,7 @@ public sealed class EgyptianNationalId
 
     private int GetSerialNumber()
     {
-        return int.Parse(Value.Substring(SerialIndex, 3));
+        return int.Parse(Value.Substring(SerialIndex, SerialLength));
     }
 
     private int GetYear()
