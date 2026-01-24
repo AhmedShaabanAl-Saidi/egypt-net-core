@@ -10,13 +10,14 @@ namespace Egypt.Net.Core;
 public sealed class EgyptianNationalId
 {
 
-    private const int CenturyIndex = 0;
-    private const int YearIndex = 1;
-    private const int MonthIndex = 3;
-    private const int DayIndex = 5;
-    private const int GovernorateIndex = 7;
-    private const int SerialIndex = 9;
+    private const int CenturyDigitIndex = 0;
+    private const int BirthYearStartIndex = 1;
+    private const int BirthMonthStartIndex = 3;
+    private const int BirthDayStartIndex = 5;
+    private const int GovernorateCodeStartIndex = 7;
+    private const int SerialStartIndex = 9;
     private const int SerialLength = 4;
+    // 13th digit (0-based index 12) determines gender
     private const int GenderDigitIndex = 12;
 
 
@@ -75,7 +76,7 @@ public sealed class EgyptianNationalId
     /// </exception>
     public EgyptianNationalId(string value)
     {
-        if (!IsValid(value))
+        if (!IsValidFormat(value))
             throw new InvalidNationalIdFormatException(
                 "National ID must be exactly 14 digits long and contain digits only."
             );
@@ -94,7 +95,7 @@ public sealed class EgyptianNationalId
     /// </summary>
     /// <param name="value">The National ID to validate.</param>
     /// <returns>True if the format is valid.</returns>
-    public static bool IsValid(string value)
+    public static bool IsValidFormat(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             return false;
@@ -151,7 +152,7 @@ public sealed class EgyptianNationalId
 
     private int GetGovernorateCode()
     {
-        return int.Parse(Value.Substring(GovernorateIndex, 2));
+        return int.Parse(Value.Substring(GovernorateCodeStartIndex, 2));
     }
 
     private Governorate GetGovernorate()
@@ -166,30 +167,30 @@ public sealed class EgyptianNationalId
 
     private int GetSerialNumber()
     {
-        return int.Parse(Value.Substring(SerialIndex, SerialLength));
+        return int.Parse(Value.Substring(SerialStartIndex, SerialLength));
     }
 
     private int GetYear()
     {
         int centuryBase = GetCenturyBase();
-        int yearPart = int.Parse(Value.Substring(YearIndex, 2));
+        int yearPart = int.Parse(Value.Substring(BirthYearStartIndex, 2));
 
         return centuryBase + yearPart;
     }
 
     private int GetMonth()
     {
-        return int.Parse(Value.Substring(MonthIndex, 2));
+        return int.Parse(Value.Substring(BirthMonthStartIndex, 2));
     }
 
     private int GetDay()
     {
-        return int.Parse(Value.Substring(DayIndex, 2));
+        return int.Parse(Value.Substring(BirthDayStartIndex, 2));
     }
 
     private int GetCenturyBase()
     {
-        char centuryDigit = Value[CenturyIndex];
+        char centuryDigit = Value[CenturyDigitIndex];
 
         return centuryDigit switch
         {
