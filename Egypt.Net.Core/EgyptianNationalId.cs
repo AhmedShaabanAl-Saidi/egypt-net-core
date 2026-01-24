@@ -73,7 +73,10 @@ public sealed class EgyptianNationalId
     /// </exception>
     public EgyptianNationalId(string value)
     {
-        IsValid(value);
+        if (!IsValid(value))
+            throw new InvalidNationalIdFormatException(
+                "National ID must be exactly 14 digits long and contain digits only."
+            );
 
         Value = value;
 
@@ -89,26 +92,18 @@ public sealed class EgyptianNationalId
     /// </summary>
     /// <param name="value">The National ID to validate.</param>
     /// <returns>True if the format is valid.</returns>
-    /// <exception cref="InvalidNationalIdFormatException">
-    /// Thrown when the format rules are violated.
-    /// </exception>
     public static bool IsValid(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             return false;
 
         if (value.Length != 14)
-            throw new InvalidNationalIdFormatException(
-                 "National ID must be exactly 14 digits long."
-                );
-
+            return false;
 
         foreach (char c in value)
         {
             if (!char.IsDigit(c))
-                throw new InvalidNationalIdFormatException(
-                    "National ID must contain digits only."
-                );
+                return false;
         }
 
         return true;
