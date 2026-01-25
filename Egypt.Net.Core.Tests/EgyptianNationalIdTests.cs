@@ -90,4 +90,39 @@ public class EgyptianNationalIdTests
 
         Assert.True(id.IsAdult);
     }
+
+    [Fact]
+    public void TryCreate_ShouldReturnTrue_AndObject_WhenNationalIdIsValid()
+    {
+        var value = "30101011234567";
+
+        var result = EgyptianNationalId.TryCreate(value, out var nationalId);
+
+        Assert.True(result);
+        Assert.NotNull(nationalId);
+    }
+
+    [Fact]
+    public void TryCreate_ShouldReturnFalse_AndNull_WhenFormatIsInvalid()
+    {
+        var value = "123"; // invalid format
+
+        var result = EgyptianNationalId.TryCreate(value, out var nationalId);
+
+        Assert.False(result);
+        Assert.Null(nationalId);
+    }
+
+    [Fact]
+    public void TryCreate_ShouldReturnFalse_WhenDomainValidationFails()
+    {
+        // invalid governorate code (99)
+        var value = "30101019999999";
+
+        var result = EgyptianNationalId.TryCreate(value, out var nationalId);
+
+        Assert.False(result);
+        Assert.Null(nationalId);
+    }
+
 }
