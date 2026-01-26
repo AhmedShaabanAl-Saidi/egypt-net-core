@@ -3,20 +3,19 @@
 Core domain utilities for working with Egyptian national data in .NET.
 
 This library provides clean, immutable, and well-tested domain models
-for common Egyptian data concepts, starting with the Egyptian National ID.
+for common Egyptian data concepts, starting with the **Egyptian National ID**.
 
 ---
 
-## Why this project exists
+## Why this library exists
 
-Most examples and libraries in the .NET ecosystem focus on global or Western
-data models. Egyptian developers often reimplement the same logic
-(such as parsing the national ID) in ad-hoc, error-prone ways.
+Most .NET examples focus on global or Western data models.
+Egyptian developers often reimplement the same logic
+(such as parsing the national ID) in ad-hoc and error-prone ways.
 
-This project exists to:
-
-- Provide a clean and reusable core library
-- Encourage correct domain modeling
+This library exists to:
+- Provide a clean and reusable core domain model
+- Encourage correct validation and domain boundaries
 - Serve as an educational reference for beginners
 - Grow gradually through real Egyptian use cases
 
@@ -30,21 +29,11 @@ This project exists to:
 - Resolve governorate
 - Calculate age and adulthood
 - Clean and immutable domain model
-- Domain-specific exceptions
+- Domain-specific exception hierarchy
 - Safe creation via `TryCreate`
+- Quick validation via `IsValid`
 - No external dependencies
 - Fully unit tested
-
----
-
-## Non-Goals
-
-This project does **not** aim to:
-
-- Be a full identity or authentication system
-- Handle UI, databases, or APIs
-- Replace official government validation
-- Solve all Egyptian data problems at once
 
 ---
 
@@ -69,7 +58,7 @@ Console.WriteLine(nationalId.Governorate);  // Cairo
 Console.WriteLine(nationalId.IsAdult);      // true
 ```
 
-## Using TryCreate (recommended for beginners)
+## Safe Creation (Recommended)
 ```csharp
 using Egypt.Net.Core;
 
@@ -83,9 +72,14 @@ else
 }
 ```
 
+## Quick Validation
+```csharp
+bool isValid = EgyptianNationalId.IsValid("30101010123456");
+```
+
 ## Versioning
 
-This project follows semantic versioning:
+This library follows semantic versioning:
 
 - `0.x.x` → Public API may change
 - `1.0.0` → Stable API

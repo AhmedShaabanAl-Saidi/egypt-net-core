@@ -1,22 +1,22 @@
 # Egypt.NET 🇪🇬
 
-A .NET open-source project focused on building clean, well-designed
-domain libraries for Egyptian-specific data and real-world use cases.
+An open-source .NET project focused on building clean, well-designed
+domain libraries for **Egyptian-specific data and real-world use cases**.
 
-The first released module is **Egypt.Net.Core**, which provides a
-strong domain model for the Egyptian National ID.
+The project aims to provide production-aware, beginner-friendly
+domain models instead of ad-hoc or copy-paste implementations.
 
 ---
 
 ## 🎯 Project Goals
 
-This project aims to:
+Egypt.NET exists to:
 
 - Provide **Egypt-focused .NET libraries**
 - Encourage **clean domain modeling**
 - Help **beginners learn real open-source practices**
-- Avoid ad-hoc, copy-paste implementations
-- Grow gradually with real use cases
+- Avoid fragile, duplicated implementations
+- Grow gradually through real, well-defined use cases
 
 ---
 
@@ -26,13 +26,14 @@ This project aims to:
 
 Core domain utilities for working with Egyptian national data.
 
-Features include:
+Current features include:
 - Egyptian National ID parsing and validation
 - Birth date extraction
 - Gender detection
 - Governorate resolution
 - Age and adulthood calculation
-- Domain-specific exceptions
+- Safe creation without exceptions
+- Domain-specific exception hierarchy
 - Fully unit tested
 - No external dependencies
 
@@ -60,7 +61,7 @@ dotnet add package Egypt.Net.Core
 Each module includes:
 - Dedicated test project
 - Clear and readable unit tests
-- Realistic test cases
+- Realistic test cases that reflect real usage
 
 ---
 
@@ -79,7 +80,7 @@ Recommended flow:
 ## 🗺 Roadmap (High-Level)
 
 - Improve National ID validation rules
-- Add safe factory methods and result types
+- Add more safe factory APIs
 - Introduce more Egyptian domain models
 - Improve documentation and examples
 
