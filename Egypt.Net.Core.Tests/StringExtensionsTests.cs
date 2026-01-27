@@ -7,14 +7,14 @@ namespace Egypt.Net.Core.Tests;
 /// </summary>
 public class StringExtensionsTests
 {
-    private const string ValidId = "30101011234567";
+    private const string ValidId = "30101010123458";
     private const string InvalidFormatId = "123";
     private const string InvalidChecksumId = "30101011234568";
 
     [Fact]
     public void IsValidEgyptianNationalId_ShouldReturnTrue_ForValidId()
     {
-        var result = ValidId.IsValidEgyptianNationalId(validateChecksum: false);
+        var result = ValidId.IsValidEgyptianNationalId();
 
         Assert.True(result);
     }
@@ -30,7 +30,7 @@ public class StringExtensionsTests
     [Fact]
     public void ToEgyptianNationalId_ShouldReturnNationalId_ForValidId()
     {
-        var nationalId = ValidId.ToEgyptianNationalId(validateChecksum: false);
+        var nationalId = ValidId.ToEgyptianNationalId();
 
         Assert.NotNull(nationalId);
         Assert.Equal(ValidId, nationalId!.Value);
@@ -47,7 +47,7 @@ public class StringExtensionsTests
     [Fact]
     public void TryParseAsNationalId_ShouldReturnTrue_ForValidId()
     {
-        var result = ValidId.TryParseAsNationalId(out var nationalId, validateChecksum: false);
+        var result = ValidId.TryParseAsNationalId(out var nationalId);
 
         Assert.True(result);
         Assert.NotNull(nationalId);
@@ -90,7 +90,7 @@ public class StringExtensionsTests
     [Fact]
     public void HasValidNationalIdChecksum_ShouldReturnTrue_ForValidChecksum()
     {
-        // Assuming ValidId has correct checksum
+        // ValidId has correct checksum
         var result = ValidId.HasValidNationalIdChecksum();
 
         Assert.True(result);
@@ -108,11 +108,11 @@ public class StringExtensionsTests
     public void ChainedExtensionMethods_ShouldWork()
     {
         // Test chaining: validate format, then convert
-        var id = "30101011234567";
+        var id = "30101010123458";
 
         if (id.HasValidNationalIdFormat())
         {
-            var nationalId = id.ToEgyptianNationalId(validateChecksum: false);
+            var nationalId = id.ToEgyptianNationalId();
             Assert.NotNull(nationalId);
             Assert.Equal(Governorate.Cairo, nationalId!.Governorate);
         }

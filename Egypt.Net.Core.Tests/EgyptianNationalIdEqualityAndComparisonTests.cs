@@ -10,8 +10,8 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void Equals_ShouldReturnTrue_WhenBothNationalIdsAreSame()
     {
-        var id1 = new EgyptianNationalId("30101011234567", validateChecksum: false);
-        var id2 = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        var id1 = new EgyptianNationalId("30101011234565");
+        var id2 = new EgyptianNationalId("30101011234565");
 
         Assert.True(id1.Equals(id2));
         Assert.True(id1 == id2);
@@ -21,8 +21,8 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void Equals_ShouldReturnFalse_WhenNationalIdsAreDifferent()
     {
-        var id1 = new EgyptianNationalId("30101011234567", validateChecksum: false);
-        var id2 = new EgyptianNationalId("30101011234568", validateChecksum: false);
+        var id1 = new EgyptianNationalId("30101011234565");
+        var id2 = new EgyptianNationalId("30101011234668", validateChecksum: false);
 
         Assert.False(id1.Equals(id2));
         Assert.False(id1 == id2);
@@ -32,7 +32,7 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void Equals_ShouldReturnFalse_WhenComparingWithNull()
     {
-        var id = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        var id = new EgyptianNationalId("30101011234565");
 
         Assert.False(id.Equals(null));
         Assert.False(id == null);
@@ -42,8 +42,8 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void GetHashCode_ShouldBeSame_ForEqualNationalIds()
     {
-        var id1 = new EgyptianNationalId("30101011234567", validateChecksum: false);
-        var id2 = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        var id1 = new EgyptianNationalId("30101011234565");
+        var id2 = new EgyptianNationalId("30101011234565");
 
         Assert.Equal(id1.GetHashCode(), id2.GetHashCode());
     }
@@ -51,8 +51,8 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void GetHashCode_ShouldBeDifferent_ForDifferentNationalIds()
     {
-        var id1 = new EgyptianNationalId("30101011234567", validateChecksum: false);
-        var id2 = new EgyptianNationalId("30101021234567", validateChecksum: false);
+        var id1 = new EgyptianNationalId("30101011234565");
+        var id2 = new EgyptianNationalId("30101021234565", validateChecksum: false);
 
         Assert.NotEqual(id1.GetHashCode(), id2.GetHashCode());
     }
@@ -82,8 +82,8 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void CompareTo_ShouldReturnZero_WhenBirthDatesAndSerialsAreSame()
     {
-        var id1 = new EgyptianNationalId("30101011234567", validateChecksum: false);
-        var id2 = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        var id1 = new EgyptianNationalId("30101011234565");
+        var id2 = new EgyptianNationalId("30101011234565");
 
         Assert.Equal(0, id1.CompareTo(id2));
     }
@@ -91,8 +91,8 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void CompareTo_ShouldCompareBySerial_WhenBirthDatesAreEqual()
     {
-        var id1 = new EgyptianNationalId("30101011200001", validateChecksum: false); // Serial 0001
-        var id2 = new EgyptianNationalId("30101011200002", validateChecksum: false); // Serial 0002
+        var id1 = new EgyptianNationalId("30101011200007"); // Serial 0000
+        var id2 = new EgyptianNationalId("30101011200019"); // Serial 0001
 
         Assert.True(id1.CompareTo(id2) < 0);
         Assert.True(id1 < id2);
@@ -101,9 +101,9 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void CanBeUsedInHashSet()
     {
-        var id1 = new EgyptianNationalId("30101011234567", validateChecksum: false);
-        var id2 = new EgyptianNationalId("30101011234567", validateChecksum: false);
-        var id3 = new EgyptianNationalId("30101021234567", validateChecksum: false);
+        var id1 = new EgyptianNationalId("30101011234565");
+        var id2 = new EgyptianNationalId("30101011234565");
+        var id3 = new EgyptianNationalId("30101021234565", validateChecksum: false);
 
         var hashSet = new HashSet<EgyptianNationalId> { id1, id2, id3 };
 
@@ -132,8 +132,8 @@ public class EgyptianNationalIdEqualityAndComparisonTests
     [Fact]
     public void ToString_ShouldReturnNationalIdValue()
     {
-        var id = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        var id = new EgyptianNationalId("30101011234565");
 
-        Assert.Equal("30101011234567", id.ToString());
+        Assert.Equal("30101011234565", id.ToString());
     }
 }

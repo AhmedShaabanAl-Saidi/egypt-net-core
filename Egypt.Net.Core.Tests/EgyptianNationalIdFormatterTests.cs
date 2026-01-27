@@ -2,50 +2,44 @@ using Egypt.Net.Core;
 
 namespace Egypt.Net.Core.Tests;
 
-/// <summary>
-/// Tests for National ID formatting methods
-/// </summary>
 public class EgyptianNationalIdFormatterTests
 {
     private readonly EgyptianNationalId _testId;
 
     public EgyptianNationalIdFormatterTests()
     {
-        _testId = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        // Cairo (01), Born 2001-01-01, Male, Serial 2345
+        _testId = new EgyptianNationalId("30101010123458");
     }
 
     [Fact]
     public void FormatWithDashes_ShouldReturnCorrectFormat()
     {
         var formatted = _testId.FormatWithDashes();
-
-        Assert.Equal("3-010101-01-23456", formatted);
+        Assert.Equal("3-010101-01-23458", formatted);
     }
 
     [Fact]
     public void FormatWithSpaces_ShouldReturnCorrectFormat()
     {
         var formatted = _testId.FormatWithSpaces();
-
-        Assert.Equal("3 010101 01 23456", formatted);
+        Assert.Equal("3 010101 01 23458", formatted);
     }
 
     [Fact]
     public void FormatWithBrackets_ShouldReturnCorrectFormat()
     {
         var formatted = _testId.FormatWithBrackets();
-
-        Assert.Equal("[3][010101][01][23456]", formatted);
+        Assert.Equal("[3][010101][01][23458]", formatted);
     }
 
     [Fact]
     public void FormatMasked_ShouldMaskMiddleDigits()
     {
         var formatted = _testId.FormatMasked();
-
-        Assert.Equal("301********67", formatted);
+        Assert.Equal("301********58", formatted);
         Assert.Contains("301", formatted);
-        Assert.Contains("67", formatted);
+        Assert.Contains("58", formatted);
         Assert.Contains("********", formatted);
     }
 
@@ -53,7 +47,6 @@ public class EgyptianNationalIdFormatterTests
     public void FormatDetailed_ShouldIncludeAllInformation()
     {
         var formatted = _testId.FormatDetailed();
-
         Assert.Contains("Century: 3", formatted);
         Assert.Contains("2000s", formatted);
         Assert.Contains("Birth Date:", formatted);
@@ -69,7 +62,6 @@ public class EgyptianNationalIdFormatterTests
     {
         var id1900s = new EgyptianNationalId("29501011234567", validateChecksum: false);
         var formatted = id1900s.FormatDetailed();
-
         Assert.Contains("Century: 2", formatted);
         Assert.Contains("1900s", formatted);
     }
@@ -80,7 +72,6 @@ public class EgyptianNationalIdFormatterTests
         var id1 = new EgyptianNationalId("28012152200001", validateChecksum: false);
         var id2 = new EgyptianNationalId("31506283500099", validateChecksum: false);
 
-        // Just ensure they don't throw exceptions
         Assert.NotNull(id1.FormatWithDashes());
         Assert.NotNull(id1.FormatWithSpaces());
         Assert.NotNull(id1.FormatWithBrackets());

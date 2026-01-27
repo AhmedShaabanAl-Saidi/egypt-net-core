@@ -7,7 +7,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void Constructor_WithValidNationalId_ShouldCreateObject()
     {
-        var nationalIdValue = "30101011234565";
+        var nationalIdValue = "30101010123458";
 
         var nationalId = new EgyptianNationalId(nationalIdValue);
 
@@ -17,7 +17,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void BirthDate_ShouldBeParsedCorrectly_FromNationalId()
     {
-        var nationalIdValue = "30101011234565";
+        var nationalIdValue = "30101010123458";
         var expectedBirthDate = new DateTime(2001, 01, 01);
 
         var nationalId = new EgyptianNationalId(nationalIdValue);
@@ -28,7 +28,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void Gender_ShouldBeFemale_WhenSerialLastDigitIsEven()
     {
-        var nationalIdValue = "30101011234668"; // Female (even)
+        var nationalIdValue = "30101010123460"; // Female (even)
 
         var nationalId = new EgyptianNationalId(nationalIdValue, validateChecksum: false);
 
@@ -38,7 +38,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void Gender_ShouldBeMale_WhenGenderDigitIsOdd()
     {
-        var nationalIdValue = "30101011234565"; // Male (odd)
+        var nationalIdValue = "30101010123458"; // Male (odd)
 
         var nationalId = new EgyptianNationalId(nationalIdValue);
 
@@ -59,7 +59,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void Governorate_ShouldBeCairo_WhenCodeIs01()
     {
-        var id = new EgyptianNationalId("30101011234565");
+        var id = new EgyptianNationalId("30101010123458");
 
         Assert.Equal(Governorate.Cairo, id.Governorate);
     }
@@ -94,7 +94,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void TryCreate_ShouldReturnTrue_AndObject_WhenNationalIdIsValid()
     {
-        var value = "30101011234565";
+        var value = "30101010123458";
 
         var result = EgyptianNationalId.TryCreate(value, out var nationalId);
 
@@ -128,7 +128,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void BirthDateComponents_ShouldMatch_BirthDate()
     {
-        var id = new EgyptianNationalId("30101011234565");
+        var id = new EgyptianNationalId("30101010123458");
 
         Assert.Equal(2001, id.BirthYear);
         Assert.Equal(1, id.BirthMonth);
@@ -138,7 +138,7 @@ public class EgyptianNationalIdTests
     [Fact]
     public void IsValid_ShouldReturnTrue_WhenNationalIdIsValid()
     {
-        var value = "30101011234565";
+        var value = "30101010123458";
 
         var result = EgyptianNationalId.IsValid(value);
 

@@ -11,7 +11,7 @@ public class EgyptianNationalIdChecksumTests
     public void ValidateChecksum_ShouldReturnTrue_WhenChecksumIsValid()
     {
         // This is a valid National ID with correct checksum
-        var validId = "30101011234567";
+        var validId = "30101011234565";
 
         var isValid = EgyptianNationalId.ValidateChecksum(validId);
 

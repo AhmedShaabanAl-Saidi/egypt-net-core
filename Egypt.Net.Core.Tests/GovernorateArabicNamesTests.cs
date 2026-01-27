@@ -61,7 +61,7 @@ public class GovernorateArabicNamesTests
     [Fact]
     public void NationalId_GovernorateNameAr_ShouldReturnArabicName()
     {
-        var id = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        var id = new EgyptianNationalId("30101010123458");
 
         Assert.Equal("القاهرة", id.GovernorateNameAr);
     }
@@ -69,7 +69,7 @@ public class GovernorateArabicNamesTests
     [Fact]
     public void NationalId_GovernorateNameEn_ShouldReturnEnglishName()
     {
-        var id = new EgyptianNationalId("30101011234567", validateChecksum: false);
+        var id = new EgyptianNationalId("30101010123458");
 
         Assert.Equal("Cairo", id.GovernorateNameEn);
     }
@@ -77,7 +77,7 @@ public class GovernorateArabicNamesTests
     [Fact]
     public void NationalId_GenderAr_ShouldReturnArabicGender_Male()
     {
-        var id = new EgyptianNationalId("30101011234567", validateChecksum: false); // Male
+        var id = new EgyptianNationalId("30101010123458"); // Male (digit 6 is odd)
 
         Assert.Equal("ذكر", id.GenderAr);
     }
@@ -85,7 +85,7 @@ public class GovernorateArabicNamesTests
     [Fact]
     public void NationalId_GenderAr_ShouldReturnArabicGender_Female()
     {
-        var id = new EgyptianNationalId("30101011234568", validateChecksum: false); // Female
+        var id = new EgyptianNationalId("30101010123460", validateChecksum: false); // Female (digit 6 is even)
 
         Assert.Equal("أنثى", id.GenderAr);
     }
