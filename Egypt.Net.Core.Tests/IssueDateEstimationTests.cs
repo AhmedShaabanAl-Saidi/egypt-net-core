@@ -23,7 +23,7 @@ public class IssueDateEstimationTests
     [InlineData("30101010123458", 2017, 1, 1)]   // Born 2001-01-01 → Issue 2017-01-01
     [InlineData("29001010123452", 2006, 1, 1)]   // Born 1990-01-01 → Issue 2006-01-01
     [InlineData("31506283500098", 2031, 6, 28)]  // Born 2015-06-28 → Issue 2031-06-28
-    [InlineData("20512150123456", 1971, 12, 15)] // Born 1955-12-15 → Issue 1971-12-15
+    [InlineData("25512150123451", 1971, 12, 15)] // Born 1955-12-15 → Issue 1971-12-15
     public void EstimatedIssueDate_ShouldCalculateCorrectly(
         string nationalId,
         int expectedYear,
@@ -163,31 +163,62 @@ public class IssueDateEstimationTests
     {
         // Arrange
         // Birth: 2005-01-01 → Issue: 2021-01-01 → Expiry: 2028-01-01
-        // Today: 2026-01-30 → Expires in 2 years
+        // Today: 2026-01-30 → Expires in ~1 year
         var id = new EgyptianNationalId("30501010123459");
 
         // Act
         var yearsUntilExpiry = id.YearsUntilExpiry;
 
         // Assert
-        // Expires in 2 years
+        // Today is 2026-01-30, expiry is 2028-01-01
+        // 2028-01-01 hasn't arrived yet in 2026, so it's 1 full year remaining
         Assert.True(yearsUntilExpiry > 0);
-        Assert.Equal(2, yearsUntilExpiry);
+        Assert.Equal(1, yearsUntilExpiry);
     }
 
-    [Theory]
-    [InlineData("30601010123455", true)]   // Issued 2022, expires 2029 (3 years) → expiring soon
-    [InlineData("30501010123459", false)]  // Issued 2021, expires 2028 (2 years) → not expiring soon
-    [InlineData("31001010123453", false)]  // Issued 2026, expires 2033 (7 years) → not expiring soon
-    public void IsExpiringSoon_ShouldReturnCorrectValue(string nationalId, bool expected)
+    [Fact]
+    public void IsExpiringSoon_ForIdExpiringIn1Year_ShouldReturnTrue()
     {
-        // Arrange & Act
-        var id = new EgyptianNationalId(nationalId);
+        // Arrange
+        // Birth: 2005-01-01 → Issue: 2021-01-01 → Expiry: 2028-01-01
+        // Today: 2026-01-30 → Expires in 1 year → expiring soon
+        var id = new EgyptianNationalId("30501010123459");
+
+        // Act
+        var isExpiringSoon = id.IsExpiringSoon;
 
         // Assert
-        // IsExpiringSoon = expires within 0-1 years
-        // Note: Actual results may vary based on current date (2026-01-30)
-        // These tests are illustrative and may need adjustment
+        Assert.True(isExpiringSoon);
+    }
+
+    [Fact]
+    public void IsExpiringSoon_ForIdExpiringInMoreThan1Year_ShouldReturnFalse()
+    {
+        // Arrange
+        // Birth: 2008-01-01 → Issue: 2024-01-01 → Expiry: 2031-01-01
+        // Today: 2026-01-30 → Expires in 5 years → not expiring soon
+        var id = new EgyptianNationalId("30801010123450");
+
+        // Act
+        var isExpiringSoon = id.IsExpiringSoon;
+
+        // Assert
+        Assert.False(isExpiringSoon);
+    }
+
+    [Fact]
+    public void IsExpiringSoon_ForExpiredId_ShouldReturnFalse()
+    {
+        // Arrange
+        // Birth: 2001-01-01 → Issue: 2017-01-01 → Expiry: 2024-01-01
+        // Today: 2026-01-30 → Already expired → not "expiring soon"
+        var id = new EgyptianNationalId("30101010123458");
+
+        // Act
+        var isExpiringSoon = id.IsExpiringSoon;
+
+        // Assert
+        Assert.False(isExpiringSoon);
     }
 
     [Theory]
