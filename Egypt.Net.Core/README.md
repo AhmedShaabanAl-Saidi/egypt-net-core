@@ -22,7 +22,7 @@ Egyptian developers often reimplement National ID validation logic in ad-hoc and
 dotnet add package Egypt.Net.Core
 ```
 
-**Latest Version:** v1.0.1+ (checksum validation disabled by default)
+**Latest Version:** v1.1.0
 
 ---
 
@@ -37,6 +37,8 @@ Console.WriteLine(id.BirthDate);           // 2001-01-01
 Console.WriteLine(id.Age);                 // 24
 Console.WriteLine(id.Gender);              // Male
 Console.WriteLine(id.GovernorateNameAr);   // القاهرة
+Console.WriteLine(id.BirthRegionNameAr);   // القاهرة الكبرى
+Console.WriteLine(id.GenerationAr);        // جيل زد
 Console.WriteLine(id.IsAdult);             // true
 ```
 
@@ -48,29 +50,33 @@ Console.WriteLine(id.IsAdult);             // true
 - Parse and validate Egyptian National IDs
 - Safe creation with `TryCreate()` (no exceptions)
 - Quick validation with `IsValid()`
-- Optional checksum validation
+- Optional checksum validation (disabled by default)
 
 ### 📊 Data Extraction
-- Birth date, age, gender
-- Governorate (27 governorates)
-- Geographic region classification
-- Serial number
+- **Birth & Age:** Date, year, month, day, current age
+- **Demographics:** Gender, generation, age group
+- **Geography:** Governorate (27), region (7)
+- **Metadata:** Serial number, formatting
 
-### 🌍 Arabic Support
-- Full bilingual support (Arabic & English)
-- All 27 governorates in Arabic
-- Gender in Arabic (ذكر/أنثى)
+### 🌍 Geographic Classification
+- **7 Major Regions:** Greater Cairo, Delta, Canal, Upper Egypt, Sinai & Red Sea, Western Desert, Foreign
+- **Regional Checks:** Upper/Lower Egypt, Coastal, Born Abroad
 
-### 🎨 Formatting
+### 👥 Demographic Classification
+- **6 Generations:** Silent Generation → Gen Alpha (1928-present)
+- **Digital Native Detection:** Millennials, Gen Z, Gen Alpha
+
+### 🎨 Formatting & Privacy
 - 5 formatting styles: dashes, spaces, brackets, masked, detailed
-- Privacy protection with masked format
+- Privacy protection with masked format (301\*\*\*\*\*\*\*\*58)
 
 ### 🔧 Developer Experience
+- Full Arabic & English support
 - String extension methods for fluent API
 - IEquatable & IComparable support
 - LINQ-friendly
 - Zero dependencies
-- 100+ unit tests
+- 200+ unit tests
 
 ---
 
@@ -102,7 +108,7 @@ if ("30101010123458".IsValidEgyptianNationalId())
 ```csharp
 var id = new EgyptianNationalId("30101010123458");
 
-// 📅 Date & Age
+// 📅 Birth & Age (6 properties)
 id.BirthDate              // 2001-01-01
 id.BirthYear              // 2001
 id.BirthMonth             // 1
@@ -110,24 +116,83 @@ id.BirthDay               // 1
 id.Age                    // 24
 id.IsAdult                // true (>= 18)
 
-// 📍 Location
+// 📍 Location (12 properties)
 id.Governorate            // Cairo (enum)
 id.GovernorateCode        // 01
 id.GovernorateNameAr      // القاهرة
 id.GovernorateNameEn      // Cairo
 id.BirthRegion            // GreaterCairo (enum)
 id.BirthRegionNameAr      // القاهرة الكبرى
+id.BirthRegionNameEn      // GreaterCairo
 id.IsFromUpperEgypt       // false
 id.IsFromLowerEgypt       // true
+id.IsFromGreaterCairo     // true
+id.IsFromDelta            // false
+id.IsFromCoastalRegion    // false
+id.IsBornAbroad           // false
 
-// 👤 Personal
+// 👥 Demographics (12 properties)
 id.Gender                 // Male (enum)
 id.GenderAr               // ذكر
-id.SerialNumber           // 2345
+id.Generation             // GenerationZ (enum)
+id.GenerationAr           // جيل زد
+id.GenerationEn           // GenerationZ
+id.IsDigitalNative        // true
 
-// 📄 Raw
+// 📄 Metadata (2 properties)
+id.SerialNumber           // 2345
 id.Value                  // "30101010123458"
 ```
+
+---
+
+### Geographic Regions
+
+Egypt is divided into **7 geographic regions**:
+
+```csharp
+id.BirthRegion            // Region enum
+id.BirthRegionNameAr      // القاهرة الكبرى
+id.BirthRegionNameEn      // GreaterCairo
+
+// Regional checks
+id.IsFromUpperEgypt       // الصعيد
+id.IsFromLowerEgypt       // الوجه البحري
+id.IsFromGreaterCairo     // القاهرة الكبرى
+id.IsFromDelta            // الدلتا
+id.IsFromCoastalRegion    // ساحلي (بحر متوسط/أحمر)
+id.IsBornAbroad           // خارج الجمهورية
+```
+
+**The 7 Regions:**
+1. **Greater Cairo** (القاهرة الكبرى): Cairo, Giza, Qalyubia
+2. **Delta** (الدلتا): Alexandria, Dakahlia, Sharqia, Gharbia, Kafr El-Sheikh, Monufia, Beheira, Damietta
+3. **Canal** (قناة السويس): Port Said, Suez, Ismailia
+4. **Upper Egypt** (الصعيد): Beni Suef, Fayoum, Minya, Asyut, Sohag, Qena, Aswan, Luxor
+5. **Sinai & Red Sea** (سيناء والبحر الأحمر): Red Sea, North Sinai, South Sinai
+6. **Western Desert** (الصحراء الغربية): Matrouh, New Valley
+7. **Foreign** (خارج الجمهورية): Born outside Egypt
+
+---
+
+### Generation Classification
+
+Automatically determines the generation based on birth year:
+
+```csharp
+id.Generation             // Enum: SilentGeneration → GenerationAlpha
+id.GenerationAr           // الجيل الصامت → جيل ألفا
+id.GenerationEn           // SilentGeneration → GenerationAlpha
+id.IsDigitalNative        // Millennials, Gen Z, Gen Alpha = true
+```
+
+**The 6 Generations:**
+- **Silent Generation** (1928-1945) - الجيل الصامت
+- **Baby Boomers** (1946-1964) - جيل الطفرة
+- **Generation X** (1965-1980) - الجيل إكس
+- **Millennials** (1981-1996) - جيل الألفية
+- **Generation Z** (1997-2012) - جيل زد
+- **Generation Alpha** (2013+) - جيل ألفا
 
 ---
 
@@ -140,34 +205,8 @@ id.FormatWithDashes()     // 3-010101-01-23458
 id.FormatWithSpaces()     // 3 010101 01 23458
 id.FormatWithBrackets()   // [3][010101][01][23458]
 id.FormatMasked()         // 301********58 (privacy!)
-id.FormatDetailed()       // Multi-line format with all info
+id.FormatDetailed()       // Multi-line format with all details
 ```
-
----
-
-### Geographic Regions
-
-Egypt is divided into 7 regions:
-
-```csharp
-id.BirthRegion            // GreaterCairo, Delta, UpperEgypt, etc.
-id.BirthRegionNameAr      // القاهرة الكبرى
-id.IsFromUpperEgypt       // false
-id.IsFromLowerEgypt       // true
-id.IsFromGreaterCairo     // true
-id.IsFromDelta            // false
-id.IsFromCoastalRegion    // false
-id.IsBornAbroad           // false (Governorate.Foreign)
-```
-
-**Regions:**
-1. **Greater Cairo** (القاهرة الكبرى) - Cairo, Giza, Qalyubia
-2. **Delta** (الدلتا) - Alexandria, Dakahlia, Sharqia, etc.
-3. **Canal** (قناة السويس) - Port Said, Suez, Ismailia
-4. **Upper Egypt** (الصعيد) - Beni Suef, Asyut, Luxor, etc.
-5. **Sinai & Red Sea** (سيناء والبحر الأحمر)
-6. **Western Desert** (الصحراء الغربية) - Matrouh, New Valley
-7. **Foreign** (خارج الجمهورية)
 
 ---
 
@@ -176,7 +215,7 @@ id.IsBornAbroad           // false (Governorate.Foreign)
 ⚠️ **Disabled by default** - The official algorithm is not publicly documented.
 
 ```csharp
-// Default - no checksum
+// Default - no checksum validation
 var id = new EgyptianNationalId("30101010123458");  // ✅
 
 // Enable checksum (if you have the verified algorithm)
@@ -233,10 +272,12 @@ id3 < id1                 // true (1990 < 2001)
 var unique = new HashSet<EgyptianNationalId> { id1, id2, id3 };
 // Count = 2 (id1 and id2 are equal)
 
-// LINQ
+// LINQ Examples
 var adults = ids.Where(id => id.IsAdult);
 var fromCairo = ids.Where(id => id.Governorate == Governorate.Cairo);
-var expiredIds = ids.Where(id => id.IsLikelyExpired);
+var millennials = ids.Where(id => id.Generation == Generation.Millennials);
+var workingAge = ids.Where(id => id.IsWorkingAge);
+var fromUpperEgypt = ids.Where(id => id.IsFromUpperEgypt);
 ```
 
 ---
@@ -286,17 +327,41 @@ if (!id.IsAdult)
 return "Access granted";
 ```
 
-### Regional Analytics
+### Regional Demographics Dashboard
 ```csharp
-var employees = GetEmployees();
-var byRegion = employees
-    .GroupBy(e => e.NationalId.BirthRegion)
-    .OrderByDescending(g => g.Count());
+var users = GetUsers();
 
-foreach (var group in byRegion)
-{
-    Console.WriteLine($"{group.Key.GetArabicName()}: {group.Count()} employees");
-}
+// By Region
+var byRegion = users
+    .GroupBy(u => u.NationalId.BirthRegion)
+    .Select(g => new { 
+        Region = g.Key.GetArabicName(), 
+        Count = g.Count() 
+    });
+
+// By Generation
+var byGeneration = users
+    .GroupBy(u => u.NationalId.Generation)
+    .Select(g => new { 
+        Generation = g.Key.GetArabicName(), 
+        Count = g.Count() 
+    });
+
+// Digital Natives
+var digitalNatives = users.Count(u => u.NationalId.IsDigitalNative);
+```
+
+### Targeted Marketing by Demographics
+```csharp
+// Target Gen Z from coastal cities
+var targetAudience = customers
+    .Where(c => c.NationalId.Generation == Generation.GenerationZ)
+    .Where(c => c.NationalId.IsFromCoastalRegion);
+
+// Target working-age adults from Upper Egypt
+var ruralWorkforce = employees
+    .Where(e => e.NationalId.IsWorkingAge)
+    .Where(e => e.NationalId.IsFromUpperEgypt);
 ```
 
 ### Privacy-Protected Logging
@@ -313,8 +378,8 @@ logger.Log($"User {id.FormatMasked()} logged in");
 
 ## 📊 Testing
 
-- **100+ Unit Tests** with comprehensive coverage
-- All edge cases tested (leap years, boundaries, etc.)
+- **200+ Unit Tests** with comprehensive coverage
+- All edge cases tested (leap years, boundaries, generations, etc.)
 - 100% pass rate
 - Production-ready quality
 
@@ -324,23 +389,36 @@ dotnet test
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Version History
 
-### ✅ Completed
-- National ID validation & parsing
-- Checksum validation (optional)
-- Geographic region classification
-- Arabic language support
-- Formatting options
-- Equality & comparison
+### v1.1.0 - Geographic & Demographics Enhancement ✅
+- ✅ Geographic region classification (7 regions)
+- ✅ Generation classification (6 generations)
+- ✅ Age group classification (7 age groups)
+- ✅ Regional checks (Upper/Lower Egypt, Coastal)
+- ✅ Digital native detection
+- ✅ 100+ new tests
 
-### 🔜 Coming Soon
-- Generation classification (Gen Z, Millennials, etc.)
-- Age group classification
-- Zodiac signs
-- Advanced validation rules
-- ASP.NET Core integration
-- JSON serialization
+### v1.0.1 - Hotfix ✅
+- ✅ Disabled checksum validation by default
+
+### v1.0.0 - Initial Release ✅
+- ✅ National ID validation & parsing
+- ✅ Birth date & age extraction
+- ✅ Gender detection
+- ✅ 27 Governorates support
+- ✅ Arabic language support
+- ✅ Multiple formatting options
+- ✅ Equality & comparison
+
+---
+
+## 🔜 Future Enhancements
+
+- JSON serialization support
+- ASP.NET Core model binding
+- FluentValidation integration
+- Performance optimizations with Span<T>
 
 ---
 
