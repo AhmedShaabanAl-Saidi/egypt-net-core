@@ -54,7 +54,7 @@ Console.WriteLine(id.IsAdult);             // true
 
 ### 📊 Data Extraction
 - **Birth & Age:** Date, year, month, day, current age
-- **Demographics:** Gender, generation, age group
+- **Demographics:** Gender, generation classification
 - **Geography:** Governorate (27), region (7)
 - **Metadata:** Serial number, formatting
 
@@ -76,7 +76,7 @@ Console.WriteLine(id.IsAdult);             // true
 - IEquatable & IComparable support
 - LINQ-friendly
 - Zero dependencies
-- 200+ unit tests
+- 150+ unit tests
 
 ---
 
@@ -131,7 +131,7 @@ id.IsFromDelta            // false
 id.IsFromCoastalRegion    // false
 id.IsBornAbroad           // false
 
-// 👥 Demographics (12 properties)
+// 👥 Demographics (6 properties)
 id.Gender                 // Male (enum)
 id.GenderAr               // ذكر
 id.Generation             // GenerationZ (enum)
@@ -276,7 +276,6 @@ var unique = new HashSet<EgyptianNationalId> { id1, id2, id3 };
 var adults = ids.Where(id => id.IsAdult);
 var fromCairo = ids.Where(id => id.Governorate == Governorate.Cairo);
 var millennials = ids.Where(id => id.Generation == Generation.Millennials);
-var workingAge = ids.Where(id => id.IsWorkingAge);
 var fromUpperEgypt = ids.Where(id => id.IsFromUpperEgypt);
 ```
 
@@ -358,9 +357,9 @@ var targetAudience = customers
     .Where(c => c.NationalId.Generation == Generation.GenerationZ)
     .Where(c => c.NationalId.IsFromCoastalRegion);
 
-// Target working-age adults from Upper Egypt
-var ruralWorkforce = employees
-    .Where(e => e.NationalId.IsWorkingAge)
+// Target Millennials from Upper Egypt
+var ruralMillennials = employees
+    .Where(e => e.NationalId.Generation == Generation.Millennials)
     .Where(e => e.NationalId.IsFromUpperEgypt);
 ```
 
@@ -376,9 +375,26 @@ logger.Log($"User {id.FormatMasked()} logged in");
 
 ---
 
+## 📊 Performance
+
+### Baseline Metrics (v1.1.0)
+
+Measured on .NET 8.0 using BenchmarkDotNet:
+
+| Operation | Mean | Allocated |
+|-----------|------|-----------|
+| **Parsing** | 2.13 μs | ~2,777 B |
+| **Validation** | ~1-2 μs | ~100-300 B |
+| **Formatting** | ~0.5-1 μs | ~200-400 B |
+| **Property Access** | ~10-500 ns | 0-100 B |
+
+*Performance optimizations planned for v1.2.0 with Span<T> migration*
+
+---
+
 ## 📊 Testing
 
-- **200+ Unit Tests** with comprehensive coverage
+- **150+ Unit Tests** with comprehensive coverage
 - All edge cases tested (leap years, boundaries, generations, etc.)
 - 100% pass rate
 - Production-ready quality
@@ -394,7 +410,6 @@ dotnet test
 ### v1.1.0 - Geographic & Demographics Enhancement ✅
 - ✅ Geographic region classification (7 regions)
 - ✅ Generation classification (6 generations)
-- ✅ Age group classification (7 age groups)
 - ✅ Regional checks (Upper/Lower Egypt, Coastal)
 - ✅ Digital native detection
 - ✅ 100+ new tests
@@ -413,12 +428,19 @@ dotnet test
 
 ---
 
-## 🔜 Future Enhancements
+## 🚀 Roadmap
 
-- JSON serialization support
-- ASP.NET Core model binding
-- FluentValidation integration
-- Performance optimizations with Span<T>
+### v1.2.0 - Performance & Zero-Allocation (In Progress) 🔄
+- 🔄 Span<T> migration for zero-allocation parsing
+- 🔄 50% faster parsing performance
+- 🔄 80% reduction in GC pressure
+- 🔄 Comprehensive benchmarking suite
+- 🔄 Memory profiling and optimization
+
+### Future
+- 🔜 JSON serialization support
+- 🔜 ASP.NET Core model binding
+- 🔜 FluentValidation integration
 
 ---
 
@@ -438,3 +460,4 @@ MIT License - Made with ❤️ for Egyptian developers
 
 - 📦 [NuGet Package](https://www.nuget.org/packages/Egypt.Net.Core/)
 - 💻 [GitHub Repository](https://github.com/abdulrahmanhossam/Egypt-Net-Core)
+- 📊 [Benchmarks](../Egypt.Net.Core.Benchmarks/)
