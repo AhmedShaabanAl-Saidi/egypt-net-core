@@ -20,7 +20,7 @@ Egypt.NET exists to:
 
 ## 📦 Current Modules
 
-### Egypt.Net.Core **v1.1.0** 🆕
+### Egypt.Net.Core **v1.1.0** 
 
 Core domain utilities for working with Egyptian national data.
 
@@ -32,12 +32,18 @@ Core domain utilities for working with Egyptian national data.
 - ✅ **7 Geographic Regions** - Greater Cairo, Delta, Canal, Upper Egypt, Sinai & Red Sea, Western Desert, Foreign
 - ✅ **6 Generations** - Silent Generation → Gen Alpha (1928-present)
 - ✅ **Regional Classification** - Upper/Lower Egypt, Coastal, Born Abroad
-- ✅ **Demographics** - Digital natives, working age, senior citizens
+- ✅ **Demographics** - Digital natives detection
 - ✅ **Multiple Formatting** - dashes, spaces, brackets, masked, detailed
 - ✅ **Privacy Protection** - masked format for logging
 - ✅ **Developer Experience** - IEquatable, IComparable, LINQ-friendly, string extensions
 - ✅ **Zero Dependencies** - pure .NET implementation
-- ✅ **200+ Unit Tests** - comprehensive coverage
+- ✅ **150+ Unit Tests** - comprehensive coverage
+- ✅ **Performance** - 2.13 μs average parsing time
+
+#### Performance (v1.1.0 Baseline):
+- **Parsing:** 2.13 μs average
+- **Memory:** ~2.7 KB per operation
+- **GC Pressure:** 232 Gen0 collections per 262K operations
 
 📖 **Module Documentation:**  
 👉 [`Egypt.Net.Core/README.md`](./Egypt.Net.Core/README.md)
@@ -70,7 +76,6 @@ Console.WriteLine(id.IsFromCoastalRegion); // false
 
 // Demographics
 Console.WriteLine(id.GenerationAr);        // جيل زد
-Console.WriteLine(id.AgeGroupAr);          // شباب
 Console.WriteLine(id.IsDigitalNative);     // true
 
 // Formatting
@@ -94,9 +99,10 @@ if ("30101010123458".IsValidEgyptianNationalId())
 - **Fail Fast or Fail Safely** - TryCreate() for safe parsing, exceptions for invalid state
 - **No Magic** - Transparent, readable code
 - **Beginner-Friendly** - Clear examples and documentation
-- **Production-Aware** - Battle-tested with 200+ unit tests
+- **Production-Aware** - Battle-tested with 150+ unit tests
 - **Bilingual Support** - Arabic & English throughout
 - **Clean, Immutable Objects** - Thread-safe and predictable
+- **Performance-Conscious** - Benchmarked and optimized
 
 ---
 
@@ -107,11 +113,28 @@ Each module includes:
 - Clear and readable unit tests
 - Realistic test cases that reflect real-world usage
 - Comprehensive edge case coverage
-- **200+ tests** in Egypt.Net.Core
+- **150+ tests** in Egypt.Net.Core
+- Performance benchmarks with BenchmarkDotNet
 
 ```bash
 dotnet test
 ```
+
+---
+
+## 📊 Benchmarking
+
+Performance benchmarking suite using BenchmarkDotNet:
+
+```bash
+cd Egypt.Net.Core.Benchmarks
+dotnet run -c Release
+```
+
+**Current Performance (v1.1.0):**
+- Parsing: 2.13 μs average
+- Allocation: ~2.7 KB per operation
+- Validated with 262,144 operations
 
 ---
 
@@ -126,20 +149,28 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Write or update tests
 4. Ensure all tests pass (`dotnet test`)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request with a clear description
+5. Run benchmarks if performance-related (`dotnet run -c Release`)
+6. Commit your changes (`git commit -m 'Add amazing feature'`)
+7. Push to the branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request with a clear description
 
 ---
 
 ## 🗺 Roadmap
 
+### v1.2.0 - Performance & Zero-Allocation 🔄 (In Progress)
+- 🔄 Span<T> migration for zero-allocation parsing
+- 🔄 String.Create() for formatting optimization
+- 🔄 ArrayPool for temporary buffers
+- 🔄 **Target:** 50% faster parsing, 80% less GC pressure
+- 🔄 Comprehensive benchmarking suite
+
 ### v1.1.0 - Geographic & Demographics ✅ (Current)
 - ✅ Geographic region classification
 - ✅ Generation classification (6 generations)
-- ✅ Age group classification (7 age groups)
 - ✅ Regional analytics support
 - ✅ Digital native detection
+- ✅ Performance baseline established
 
 ### v1.0.1 - Hotfix ✅
 - ✅ Disabled checksum validation by default
@@ -152,16 +183,11 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 - ✅ Arabic language support
 - ✅ Multiple formatting options
 
-### v1.2.0 - Integration & Serialization 🔜
+### v1.3.0 - Integration & Serialization 🔜
 - 🔜 JSON serialization support (System.Text.Json)
 - 🔜 ASP.NET Core model binding
 - 🔜 FluentValidation integration
 - 🔜 Swagger/OpenAPI support
-
-### v1.3.0 - Performance & Extensions 🔜
-- 🔜 Performance optimizations with `Span<T>`
-- 🔜 Benchmark suite
-- 🔜 Additional validation rules
 
 ### Future Modules 🔮
 - 🔮 Egypt.Net.Phone - Egyptian phone number validation
@@ -177,13 +203,15 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 |--------|-------|
 | **Modules** | 1 |
 | **Version** | v1.1.0 |
-| **Total Properties** | 40+ |
-| **Enums** | 5 |
-| **Extension Methods** | 20+ |
-| **Unit Tests** | 200+ |
+| **Total Properties** | 26 |
+| **Enums** | 4 (Gender, Governorate, Region, Generation) |
+| **Extension Methods** | 15+ |
+| **Unit Tests** | 150+ |
 | **Test Coverage** | 100% |
 | **Dependencies** | 0 |
 | **Supported .NET** | .NET 8.0+ |
+| **Avg Parsing Time** | 2.13 μs |
+| **Memory per Parse** | ~2.7 KB |
 
 ---
 
@@ -200,6 +228,7 @@ If you find this project helpful:
 - 🐛 Report bugs or request features via [Issues](https://github.com/abdulrahmanhossam/Egypt-Net-Core/issues)
 - 🤝 Contribute via Pull Requests
 - 📢 Share with the Egyptian developer community
+- 📊 Run benchmarks and share results
 
 ---
 
@@ -208,6 +237,7 @@ If you find this project helpful:
 - 💻 **GitHub**: [abdulrahmanhossam/Egypt-Net-Core](https://github.com/abdulrahmanhossam/Egypt-Net-Core)
 - 📦 **NuGet**: [Egypt.Net.Core](https://www.nuget.org/packages/Egypt.Net.Core/)
 - 📧 **Issues**: [GitHub Issues](https://github.com/abdulrahmanhossam/Egypt-Net-Core/issues)
+- 📊 **Benchmarks**: [Performance Results](./Egypt.Net.Core.Benchmarks/)
 
 ---
 
